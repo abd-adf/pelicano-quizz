@@ -208,8 +208,10 @@ const T = {
     socialProof: "Al meer dan 1.200 Belgen deden de test.",
     scoreTease: "Hoe ver zat jij ernaast?",
     scoreTeaseText: "Zie per vraag het verschil tussen jouw gok en de werkelijkheid.",
-    labelName: "Voornaam",
-    placeholderName: "Jouw voornaam",
+    labelFirstName: "Voornaam",
+    placeholderFirstName: "Jouw voornaam",
+    labelLastName: "Achternaam",
+    placeholderLastName: "Jouw achternaam",
     labelPhone: "Telefoonnummer (optioneel)",
     placeholderPhone: "+32 ...",
     labelEmail: "E-mailadres",
@@ -308,8 +310,10 @@ const T = {
     socialProof: "Plus de 1 200 Belges ont déjà fait le test.",
     scoreTease: "À quel point t'es-tu trompé(e) ?",
     scoreTeaseText: "Découvre, question par question, l'écart entre ton estimation et la réalité.",
-    labelName: "Prénom",
-    placeholderName: "Ton prénom",
+    labelFirstName: "Prénom",
+    placeholderFirstName: "Ton prénom",
+    labelLastName: "Nom de famille",
+    placeholderLastName: "Ton nom",
     labelPhone: "Numéro de téléphone (optionnel)",
     placeholderPhone: "+32 ...",
     labelEmail: "Adresse e-mail",
@@ -511,8 +515,12 @@ function showGate(){
     </div>
     <div class="field-group">
       <div class="field">
-        <label for="fname">${l.labelName}</label>
-        <input type="text" id="fname" autocomplete="given-name" placeholder="${l.placeholderName}">
+        <label for="fname">${l.labelFirstName}</label>
+        <input type="text" id="fname" autocomplete="given-name" placeholder="${l.placeholderFirstName}">
+      </div>
+      <div class="field">
+        <label for="lname">${l.labelLastName}</label>
+        <input type="text" id="lname" autocomplete="family-name" placeholder="${l.placeholderLastName}">
       </div>
       <div class="field">
         <label for="email">${l.labelEmail}</label>
@@ -541,6 +549,7 @@ function showGate(){
   const submit = () => {
     const email = emailEl.value.trim();
     const fname = document.getElementById("fname").value.trim();
+    const lname = document.getElementById("lname").value.trim();
     const phone = document.getElementById("phone").value.trim();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
       emailEl.classList.add("err"); errEl.classList.add("show"); emailEl.focus(); return;
@@ -548,7 +557,7 @@ function showGate(){
     if(!gdprEl.checked){
       gdprErr.classList.add("show"); return;
     }
-    saveLead(fname, email, phone);
+    saveLead(fname, lname, email, phone);
     showResults(fname);
   };
   document.getElementById("submit").onclick = submit;
@@ -559,9 +568,9 @@ function calcScore(){ return answers.filter((a, i) => a === Q()[i].correct).leng
 
 const SHEET_URL = ""; // ← Colle ici l'URL de ton Google Apps Script Web App
 
-async function saveLead(fname, email, phone){
+async function saveLead(fname, lname, email, phone){
   const score = calcScore();
-  const payload = { lang, fname, email, phone, score, answers: JSON.stringify(answers), ts: new Date().toISOString() };
+  const payload = { lang, fname, lname, email, phone, score, answers: JSON.stringify(answers), ts: new Date().toISOString() };
   if(!SHEET_URL){ console.log("LEAD (no SHEET_URL) →", payload); return; }
   try {
     await fetch(SHEET_URL, { method: "POST", mode: "no-cors", headers: {"Content-Type": "text/plain"}, body: JSON.stringify(payload) });

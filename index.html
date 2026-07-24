@@ -566,7 +566,7 @@ function showGate(){
 
 function calcScore(){ return answers.filter((a, i) => a === Q()[i].correct).length; }
 
-const SHEET_URL = ""; // ← Colle ici l'URL de ton Google Apps Script Web App
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbzfzkCCkiUMSIzxYtFHj3tr-Z6zQlqcDSAsL9IxQqB7OdtoN5I2nylebZ93dSL6tlAzwg/exec";
 
 async function saveLead(fname, lname, email, phone){
   const score = calcScore();

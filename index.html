@@ -172,15 +172,8 @@ strong { color:var(--navy); font-weight:700; }
   </p>
 </div>
 
-<!-- Hidden Netlify form for bot detection / form registration -->
-<form name="quiz-leads" netlify netlify-honeypot="bot-field" hidden>
-  <input name="bot-field">
-  <input name="lang">
-  <input name="fname">
-  <input name="email">
-  <input name="score">
-  <input name="answers">
-</form>
+<!-- GOOGLE_SHEET_URL: replace with your Apps Script Web App URL -->
+
 
 <script>
 /* ── Logos (inline SVG → data URI) ─────────────────────── */
@@ -538,17 +531,14 @@ function showGate(){
 
 function calcScore(){ return answers.filter((a, i) => a === Q()[i].correct).length; }
 
+const SHEET_URL = ""; // ← Colle ici l'URL de ton Google Apps Script Web App
+
 async function saveLead(fname, email){
   const score = calcScore();
-  const formData = new FormData();
-  formData.append("form-name", "quiz-leads");
-  formData.append("lang", lang);
-  formData.append("fname", fname);
-  formData.append("email", email);
-  formData.append("score", score);
-  formData.append("answers", JSON.stringify(answers));
+  const payload = { lang, fname, email, score, answers: JSON.stringify(answers), ts: new Date().toISOString() };
+  if(!SHEET_URL){ console.log("LEAD (no SHEET_URL) →", payload); return; }
   try {
-    await fetch("/", { method: "POST", body: formData });
+    await fetch(SHEET_URL, { method: "POST", mode: "no-cors", headers: {"Content-Type": "text/plain"}, body: JSON.stringify(payload) });
   } catch(e){
     console.error("Lead save failed:", e);
   }

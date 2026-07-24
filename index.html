@@ -532,6 +532,9 @@ function showGate(){
         <input type="tel" id="phone" autocomplete="tel" inputmode="tel" placeholder="${l.placeholderPhone}">
       </div>
     </div>
+    <div style="position:absolute;left:-9999px" aria-hidden="true">
+      <input type="text" id="website" tabindex="-1" autocomplete="off">
+    </div>
     <label class="gdpr-check">
       <input type="checkbox" id="gdpr">
       <span>${l.gdprLabel}</span>
@@ -557,6 +560,7 @@ function showGate(){
     if(!gdprEl.checked){
       gdprErr.classList.add("show"); return;
     }
+    if(document.getElementById("website").value){ return; } // honeypot
     saveLead(fname, lname, email, phone);
     showResults(fname);
   };

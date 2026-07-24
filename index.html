@@ -105,6 +105,8 @@ strong { color:var(--navy); font-weight:700; }
 .errmsg { color:var(--pel-red); font-size:.8rem; font-weight:600; margin-top:-4px; display:none; }
 .errmsg.show { display:block; }
 .fineprint { font-size:.74rem; color:var(--muted); line-height:1.5; margin-top:12px; }
+.gdpr-check { display:flex; align-items:flex-start; gap:10px; margin:14px 0 4px; cursor:pointer; font-size:.8rem; color:var(--navy-2); line-height:1.45; }
+.gdpr-check input[type="checkbox"] { margin-top:3px; flex:none; width:18px; height:18px; accent-color:var(--pel-red); cursor:pointer; }
 .dont-feel { background:var(--navy); border-radius:14px; padding:22px 22px; margin-bottom:26px; color:rgba(255,255,255,.9); }
 .dont-feel strong { color:#fff; font-size:1.12rem; display:block; margin-bottom:6px; }
 .score-badge { display:flex; align-items:center; gap:16px; background:var(--warm); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:28px; }
@@ -208,11 +210,15 @@ const T = {
     scoreTeaseText: "Zie per vraag het verschil tussen jouw gok en de werkelijkheid.",
     labelName: "Voornaam",
     placeholderName: "Jouw voornaam",
+    labelPhone: "Telefoonnummer (optioneel)",
+    placeholderPhone: "+32 ...",
     labelEmail: "E-mailadres",
     placeholderEmail: "jij@voorbeeld.be",
     emailErr: "Vul een geldig e-mailadres in.",
+    gdprLabel: "Ik ga akkoord met de verwerking van mijn gegevens om mijn score te ontvangen en af en toe een update over kinderarmoede. Uitschrijven kan altijd met één klik.",
+    gdprErr: "Gelieve akkoord te gaan om verder te gaan.",
     gateBtn: "Toon mij mijn score & de realiteit →",
-    fineprint: "We sturen je je score-breakdown naar je inbox. Af en toe ontvang je een update over de strijd tegen kinderarmoede. Uitschrijven kan altijd met één klik. We delen jouw gegevens nooit met derden.",
+    fineprint: "We delen jouw gegevens nooit met derden.",
     dontFeel: "Schrik niet als je het fout had. De meeste mensen hebben het fout.",
     dontFeelSub: "De data toont aan dat schrijnende kinderarmoede in België een verborgen crisis is die zich volledig achter gesloten deuren afspeelt.",
     score5: ["Je kent de realiteit beter dan de meeste Belgen.", "Dat is zeldzaam, en waardevolle kennis om te delen."],
@@ -304,11 +310,15 @@ const T = {
     scoreTeaseText: "Découvre, question par question, l'écart entre ton estimation et la réalité.",
     labelName: "Prénom",
     placeholderName: "Ton prénom",
+    labelPhone: "Numéro de téléphone (optionnel)",
+    placeholderPhone: "+32 ...",
     labelEmail: "Adresse e-mail",
     placeholderEmail: "toi@exemple.be",
     emailErr: "Entre une adresse e-mail valide.",
+    gdprLabel: "J'accepte le traitement de mes données pour recevoir mon score et occasionnellement une actualité sur la pauvreté infantile. Je peux me désinscrire à tout moment en un clic.",
+    gdprErr: "Merci d'accepter pour continuer.",
     gateBtn: "Montre-moi mon score et la réalité →",
-    fineprint: "Nous t'envoyons le détail de ton score par e-mail. Tu recevras occasionnellement une actualité sur la lutte contre la pauvreté infantile. Tu peux te désinscrire à tout moment en un clic. Nous ne partageons jamais tes données avec des tiers.",
+    fineprint: "Nous ne partageons jamais tes données avec des tiers.",
     dontFeel: "Ne t'inquiète pas si tu t'es trompé(e). La plupart des gens se trompent.",
     dontFeelSub: "Les données montrent que la pauvreté infantile sévère en Belgique est une crise cachée, qui se joue entièrement derrière des portes closes.",
     score5: ["Tu connais la réalité mieux que la plupart des Belges.", "C'est rare, et c'est un savoir précieux à partager."],
@@ -509,20 +519,36 @@ function showGate(){
         <input type="email" id="email" inputmode="email" autocomplete="email" placeholder="${l.placeholderEmail}">
         <p class="errmsg" id="err">${l.emailErr}</p>
       </div>
+      <div class="field">
+        <label for="phone">${l.labelPhone}</label>
+        <input type="tel" id="phone" autocomplete="tel" inputmode="tel" placeholder="${l.placeholderPhone}">
+      </div>
     </div>
+    <label class="gdpr-check">
+      <input type="checkbox" id="gdpr">
+      <span>${l.gdprLabel}</span>
+    </label>
+    <p class="errmsg" id="gdpr-err">${l.gdprErr}</p>
     <button class="btn btn-primary" id="submit">${l.gateBtn}</button>
     <p class="fineprint">${l.fineprint}</p>
   `);
   const emailEl = document.getElementById("email");
   const errEl   = document.getElementById("err");
+  const gdprEl  = document.getElementById("gdpr");
+  const gdprErr = document.getElementById("gdpr-err");
   emailEl.addEventListener("input", () => { emailEl.classList.remove("err"); errEl.classList.remove("show"); });
+  gdprEl.addEventListener("change", () => { gdprErr.classList.remove("show"); });
   const submit = () => {
     const email = emailEl.value.trim();
     const fname = document.getElementById("fname").value.trim();
+    const phone = document.getElementById("phone").value.trim();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
       emailEl.classList.add("err"); errEl.classList.add("show"); emailEl.focus(); return;
     }
-    saveLead(fname, email);
+    if(!gdprEl.checked){
+      gdprErr.classList.add("show"); return;
+    }
+    saveLead(fname, email, phone);
     showResults(fname);
   };
   document.getElementById("submit").onclick = submit;
@@ -533,9 +559,9 @@ function calcScore(){ return answers.filter((a, i) => a === Q()[i].correct).leng
 
 const SHEET_URL = ""; // ← Colle ici l'URL de ton Google Apps Script Web App
 
-async function saveLead(fname, email){
+async function saveLead(fname, email, phone){
   const score = calcScore();
-  const payload = { lang, fname, email, score, answers: JSON.stringify(answers), ts: new Date().toISOString() };
+  const payload = { lang, fname, email, phone, score, answers: JSON.stringify(answers), ts: new Date().toISOString() };
   if(!SHEET_URL){ console.log("LEAD (no SHEET_URL) →", payload); return; }
   try {
     await fetch(SHEET_URL, { method: "POST", mode: "no-cors", headers: {"Content-Type": "text/plain"}, body: JSON.stringify(payload) });

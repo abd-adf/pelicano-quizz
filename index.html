@@ -596,11 +596,19 @@ function showGate(){
 
 function calcScore(){ return answers.filter((a, i) => a === Q()[i].correct).length; }
 
+/* ── UTM capture (stored on page load) ─────────────────── */
+const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+const _utmParams = {};
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  UTM_KEYS.forEach(k => { const v = params.get(k); if(v) _utmParams[k] = v; });
+})();
+
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbzfzkCCkiUMSIzxYtFHj3tr-Z6zQlqcDSAsL9IxQqB7OdtoN5I2nylebZ93dSL6tlAzwg/exec";
 
 async function saveLead(fname, lname, email, phone){
   const score = calcScore();
-  const payload = { lang, fname, lname, email, phone, score, answers: JSON.stringify(answers), ts: new Date().toISOString() };
+  const payload = { lang, fname, lname, email, phone, score, answers: JSON.stringify(answers), ts: new Date().toISOString(), ..._utmParams };
   if(!SHEET_URL){ console.log("LEAD (no SHEET_URL) →", payload); return; }
   try {
     await fetch(SHEET_URL, { method: "POST", mode: "no-cors", headers: {"Content-Type": "text/plain"}, body: JSON.stringify(payload) });

@@ -586,6 +586,8 @@ function showGate(){
     }
     if(document.getElementById("website").value){ return; } // honeypot
     saveLead(fname, lname, email, phone);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "form_submit", form_name: "quiz-leads", quiz_lang: lang, quiz_score: calcScore() });
     showResults(fname);
   };
   document.getElementById("submit").onclick = submit;

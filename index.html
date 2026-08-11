@@ -170,6 +170,15 @@ strong { color:var(--navy); font-weight:700; }
 .cta-block { background:var(--pel-red); border-radius:var(--r); padding:28px 24px; text-align:center; margin-bottom:20px; }
 .cta-block h2 { color:#fff; margin-bottom:8px; }
 .cta-block p { color:rgba(255,255,255,.88); margin-bottom:22px; }
+.collo-block { background:var(--paper); border:2px solid var(--frp-purple); border-radius:var(--r); padding:28px 24px; margin-bottom:20px; margin-top:20px; }
+.collo-label { font-size:.75rem; font-weight:700; letter-spacing:.08em; color:var(--frp-purple); margin-bottom:8px; }
+.collo-title { font-family:'Fraunces',Georgia,'Times New Roman',serif; font-weight:700; font-size:1.25rem; color:var(--navy); margin-bottom:10px; line-height:1.25; }
+.collo-desc { font-size:.92rem; color:var(--navy-2); line-height:1.5; margin-bottom:18px; }
+.collo-meta { font-size:.88rem; color:var(--navy-2); line-height:1.5; margin-bottom:6px; }
+.collo-meta-label { color:var(--frp-purple); font-weight:600; margin-right:4px; }
+.collo-meta strong { color:var(--navy); }
+.collo-btn { display:block; width:100%; margin-top:20px; background:var(--navy); color:#fff; text-align:center; text-decoration:none; }
+.collo-btn:hover { background:var(--navy-2); }
 .inbox-note { font-size:.82rem; color:var(--muted); text-align:center; padding:14px 0; border-top:1px solid var(--line); }
 .stack { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
 .footer { text-align:center; font-size:.76rem; color:var(--muted); margin-top:22px; }
@@ -210,7 +219,7 @@ const _SKP_SVG = `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org
 `;
 
 const SVG_PELICANO = `<img src="${_svgUri(_PELICANO_SVG)}" alt="Pelicano" style="height:60px;width:auto">`;
-const SVG_FRP = `<img src="${_svgUri(_SKP_SVG)}" alt="Stichting Koningin Paola" style="height:60px;width:auto">`;
+const SVG_FRP = `<img src="https://adfinitas.b-cdn.net/pelicano-quizz/fondation-reine-paola-logo.png" alt="Stichting Koningin Paola / Fondation Reine Paola" style="height:60px;width:auto">`;
 
 /* ── i18n ──────────────────────────────────────────────── */
 const T = {
@@ -278,6 +287,18 @@ const T = {
     shareText: "Ik deed de kinderarmoede-realiteitscheck van Pelicano en scoorde %s/5. Doe jij het beter?",
     shareTitle: "De realiteitscheck",
     footerOrg: "Stichting Koningin Paola",
+    colloLabel: "SAVE THE DATE",
+    colloTitle: "Colloquium tegen kinderarmoede",
+    colloDesc: "Van Luik naar Gent: uitdagingen begrijpen, actiepistes bouwen. Een dag rond kinderrechten, terreinervaring en verantwoord engagement.",
+    colloDate: "donderdag 15 oktober 2026",
+    colloDateDetail: ", onthaal vanaf 09:00",
+    colloLocation: "HOGENT, Gent · Nederlands · lunch inbegrepen",
+    colloAudience: "bedrijven, zorg- en eerstelijnsorganisaties, academici, onderwijs, vzw's en foundations",
+    colloBtn: "Schrijf je in voor het colloquium",
+    colloUrl: "https://pelicano.be",
+    colloDatumLabel: "Datum",
+    colloLocatieLabel: "Locatie",
+    colloVoorWieLabel: "Voor wie",
     questions: [
       {
         q: "In een welvarend land als België: hoeveel kinderen groeien op in een gezin dat risico loopt op armoede?",
@@ -380,6 +401,18 @@ const T = {
     shareText: "J'ai fait le test de réalité sur la pauvreté infantile de Pelicano et j'ai obtenu %s/5. Ferez-vous mieux ?",
     shareTitle: "Le test de réalité",
     footerOrg: "Fondation Reine Paola",
+    colloLabel: "SAVE THE DATE",
+    colloTitle: "Colloque sur la pauvreté infantile",
+    colloDesc: "De Liège à Gand : comprendre les défis, construire des pistes d'action. Une journée autour des droits de l'enfant, de l'expérience de terrain et de l'engagement responsable.",
+    colloDate: "jeudi 15 octobre 2026",
+    colloDateDetail: ", accueil à partir de 09h00",
+    colloLocation: "HOGENT, Gand · Néerlandais · lunch inclus",
+    colloAudience: "entreprises, organisations de soins et de première ligne, académiques, enseignement, ASBL et fondations",
+    colloBtn: "Inscrivez-vous au colloque",
+    colloUrl: "https://pelicano.be/fr/",
+    colloDatumLabel: "Date",
+    colloLocatieLabel: "Lieu",
+    colloVoorWieLabel: "Pour qui",
     questions: [
       {
         q: "Dans un pays prospère comme la Belgique : combien d'enfants grandissent dans une famille à risque de pauvreté ?",
@@ -715,6 +748,16 @@ function showResults(fname){
       <h2>${l.ctaTitle}</h2>
       <p>${l.ctaSub}</p>
       <a class="btn-white" href="${l.ctaUrl}" target="_blank" rel="noopener">${l.ctaBtn}</a>
+    </div>
+
+    <div class="collo-block">
+      <div class="collo-label">${l.colloLabel}</div>
+      <h3 class="collo-title">${l.colloTitle}</h3>
+      <p class="collo-desc">${l.colloDesc}</p>
+      <p class="collo-meta"><span class="collo-meta-label">${l.colloDatumLabel}</span> <strong>${l.colloDate}</strong>${l.colloDateDetail}</p>
+      <p class="collo-meta"><span class="collo-meta-label">${l.colloLocatieLabel}</span> ${l.colloLocation}</p>
+      <p class="collo-meta"><span class="collo-meta-label">${l.colloVoorWieLabel}</span> ${l.colloAudience}</p>
+      <a class="btn collo-btn" href="${l.colloUrl}" target="_blank" rel="noopener">${l.colloBtn}</a>
     </div>
 
     <div class="stack">

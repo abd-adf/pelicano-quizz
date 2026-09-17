@@ -638,7 +638,7 @@ function showGate(){
     saveLead(fname, lname, email, phone);
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: "quiz_lead_submit", form_name: "quiz-leads", quiz_lang: lang, quiz_score: calcScore() });
-    if(typeof fbq === 'function') fbq('trackCustom', 'QuizLeadPelicano', { quiz_lang: lang, quiz_score: calcScore() });
+    if(typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'quiz-pelicano', quiz_lang: lang, quiz_score: calcScore() });
     showResults(fname);
   };
   document.getElementById("submit").onclick = submit;

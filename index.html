@@ -360,9 +360,9 @@ const T = {
     desc: "Faites le test de réalité sur la pauvreté infantile en Belgique.",
     eyebrow: "Le test de réalité",
     heading: "Pensez-vous réellement connaître les conditions de vie de la jeunesse en Belgique ?",
-    sub: "En seulement 2 minutes, participez à notre test de réalité. Confrontez vos propres perceptions aux faits réels et découvrez la vérité.",
-    infoTitle: "5 questions · ± 2 minutes · anonyme",
-    infoText: "Votre score ainsi que les réponses correctes ne vous seront révélés qu'au terme du questionnaire, vous confrontant directement à la réalité brute de la pauvreté infantile dans notre pays.",
+    sub: "En seulement 2 minutes, participez à notre test de réalité. Confrontez vos propres perceptions aux faits et découvrez la réalité de la pauvreté infantile en Belgique.",
+    infoTitle: "5 questions · ± 2 minutes",
+    infoText: "Votre score ainsi que les réponses correctes ne vous seront révélés qu'au terme du questionnaire.",
     startBtn: "Commencer le test de réalité →",
     qOf: "Question %d sur %t",
     done: "%d% terminé",
@@ -383,10 +383,10 @@ const T = {
     emailErr: "Entrez une adresse e-mail valide.",
     gdprLabel: "J'accepte le traitement de mes données pour recevoir mon score et occasionnellement une actualité sur la pauvreté infantile. Je peux me désinscrire à tout moment en un clic.",
     gdprErr: "Merci d'accepter pour continuer.",
-    gateBtn: "Montre-moi mon score et la réalité →",
+    gateBtn: "Je découvre mon résultat →",
     fineprint: "Nous enverrons le détail de votre score par e-mail. Vous recevrez occasionnellement une actualité sur la lutte contre la pauvreté infantile de Pelicano et la Fondation Reine Paola. Vous pouvez vous désinscrire à tout moment en un clic.",
-    dontFeel: "Ne vous inquiétez pas si vous vous êtes trompé(e). La plupart des gens se trompent.",
-    dontFeelSub: "Les données montrent que la pauvreté infantile sévère en Belgique est une crise cachée, qui se joue entièrement derrière des portes closes.",
+    dontFeel: "Ne vous inquiétez pas si vous vous êtes trompé(e) : la pauvreté infantile reste largement sous-estimée dans notre pays.",
+    dontFeelSub: "Les données montrent que la pauvreté infantile sévère en Belgique est une crise silencieuse, qui se vit loin des regards.",
     score5: ["Une perception affûtée de la réalité", "Votre regard est bien plus lucide que celui de la majorité des Belges. Cette conscience est rare et constitue un message précieux à propager."],
     score34: ["Une réalité en partie sous-estimée", "Certains aspects vous ont échappé, car la situation réelle se révèle encore plus sombre que ce que l'opinion publique imagine."],
     score12: ["Un décalage marqué avec les faits", "Vous partagez cette vision erronée avec beaucoup d'autres, mais les statistiques concrètes demeurent profondément alarmantes."],
@@ -432,14 +432,14 @@ const T = {
     colloVoorWieLabel: "Pour qui",
     questions: [
       {
-        q: "Dans un pays prospère comme la Belgique : combien d'enfants grandissent dans une famille à risque de pauvreté ?",
+        q: "En Belgique : combien d'enfants grandissent dans une famille à risque de pauvreté ?",
         opts: ["1 enfant sur 25", "1 enfant sur 14", "1 enfant sur 7", "1 enfant sur 4"],
         optPcts: [8, 30, 62, 88], correct: 2, correctPct: 62, label: "1 enfant sur 7",
         fact: "Plus de <strong>307 600 enfants</strong> vivent dans un ménage à risque de pauvreté : 13,2 % de tous les enfants en Belgique.",
         source: "Statbel 2023"
       },
       {
-        q: "Dans un pays prospère comme la Belgique : combien de jeunes souffrent de problèmes psychologiques ?",
+        q: "En Belgique : combien de jeunes souffrent de problèmes psychologiques ?",
         opts: ["1 jeune sur 20", "1 jeune sur 10", "1 jeune sur 7", "1 jeune sur 4"],
         optPcts: [8, 28, 52, 80], correct: 2, correctPct: 52, label: "1 jeune sur 7",
         fact: "<strong>1 jeune sur 7</strong> souffre de problèmes psychologiques. Parmi eux, <strong>1 sur 10 a des pensées suicidaires</strong>. Le suicide est la principale cause de décès chez les moins de 25 ans en Belgique.",
@@ -740,12 +740,6 @@ function showResults(fname){
     <h2>${l.gapTitle}</h2>
     <div class="gap-cards">${gapCards}</div>
 
-    <div class="stat-strip">
-      <div class="stat-box"><div class="stat-n">${l.stat1n}</div><div class="stat-l">${l.stat1l}</div></div>
-      <div class="stat-box"><div class="stat-n">${l.stat2n}</div><div class="stat-l">${l.stat2l}</div></div>
-      <div class="stat-box"><div class="stat-n">${l.stat3n}</div><div class="stat-l">${l.stat3l}</div></div>
-    </div>
-
     <h2>${l.testiTitle}</h2>
     <div class="testimonials">
       <div class="testi">
@@ -766,6 +760,12 @@ function showResults(fname){
       <h2>${l.ctaTitle}</h2>
       <p>${l.ctaSub}</p>
       <a class="btn-white" href="${l.ctaUrl}" target="_blank" rel="noopener">${l.ctaBtn}</a>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-box"><div class="stat-n">${l.stat1n}</div><div class="stat-l">${l.stat1l}</div></div>
+      <div class="stat-box"><div class="stat-n">${l.stat2n}</div><div class="stat-l">${l.stat2l}</div></div>
+      <div class="stat-box"><div class="stat-n">${l.stat3n}</div><div class="stat-l">${l.stat3l}</div></div>
     </div>
 
     <div class="collo-block">

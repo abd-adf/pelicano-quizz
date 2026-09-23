@@ -4,20 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>De realiteitscheck · Pelicano × Stichting Koningin Paola</title>
-<meta name="description" content="Doe de realiteitscheck over kinderarmoede in België. 5 vragen, 2 minuten, anoniem.">
-<link rel="icon" href="./favicon.ico" type="image/png">
+<meta name="description" content="Doe de realiteitscheck over kinderarmoede in België. 5 vragen, 2 minuten.">
+<link rel="canonical" href="https://quiz.pelicano.be/">
+<link rel="alternate" hreflang="nl-BE" href="https://quiz.pelicano.be/">
+<link rel="alternate" hreflang="fr-BE" href="https://quiz.pelicano.be/fr/">
+<link rel="alternate" hreflang="x-default" href="https://quiz.pelicano.be/">
+<link rel="icon" href="/favicon.ico" type="image/png">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Pelicano">
+<meta property="og:url" content="https://quiz.pelicano.be/">
+<meta property="og:locale" content="nl_BE">
+<meta property="og:locale:alternate" content="fr_BE">
 <meta property="og:title" content="De realiteitscheck · Pelicano × Stichting Koningin Paola">
 <meta property="og:description" content="Denk je dat je weet hoe het is om op te groeien in België? Doe de 2-minuten realiteitscheck.">
-<meta property="og:image" content="https://adfinitas.b-cdn.net/pelicano-quizz/og-image.jpg">
+<meta property="og:image" content="https://adfinitas.b-cdn.net/pelicano-quizz/og-image-1200x630.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Twee lachende kinderen tegen een boom">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="De realiteitscheck · Pelicano × Stichting Koningin Paola">
 <meta name="twitter:description" content="Denk je dat je weet hoe het is om op te groeien in België? Doe de 2-minuten realiteitscheck.">
-<meta name="twitter:image" content="https://adfinitas.b-cdn.net/pelicano-quizz/og-image.jpg">
+<meta name="twitter:image" content="https://adfinitas.b-cdn.net/pelicano-quizz/og-image-1200x630.jpg">
+<meta name="twitter:image:alt" content="Twee lachende kinderen tegen een boom">
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -36,10 +46,7 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '353126878625619');
-fbq('track', 'PageView');
 </script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=353126878625619&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -247,7 +254,7 @@ const T = {
     eyebrow: "De realiteitscheck",
     heading: "Denk je dat je weet hoe het is om op te groeien in België?",
     sub: "Doe onze 2-minuten realiteitscheck en zie hoe jouw perceptie zich verhoudt tot de feiten.",
-    infoTitle: "5 vragen · ± 2 minuten · anoniem",
+    infoTitle: "5 vragen · ± 2 minuten",
     infoText: "Je score en de correcte antwoorden verschijnen pas na afloop, samen met de ongefiltreerde realiteit van kinderarmoede in ons land.",
     startBtn: "Start de realiteitscheck →",
     qOf: "Vraag %d van %t",
@@ -472,6 +479,8 @@ const T = {
 
 /* ── State ─────────────────────────────────────────────── */
 let lang = "nl";
+const SITE_URL = "https://quiz.pelicano.be/";
+const langPath = l => l === "fr" ? "/fr/" : "/";
 let answers = [];
 let step = 0;
 const card = document.getElementById("card");
@@ -485,6 +494,10 @@ function switchLang(l){
   document.title = t().title;
   document.querySelector('meta[name="description"]').content = t().desc;
   document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.dataset.lang === l));
+  // Keep the URL in sync (/ = NL, /fr/ = FR) so shared links open in the right language
+  if(location.protocol.startsWith("http")){
+    history.replaceState(null, "", langPath(l) + location.search + location.hash);
+  }
   // Update footer
   document.querySelector(".footer").innerHTML = `<a href="https://pelicano.be" target="_blank" rel="noopener">Pelicano</a> × <a href="https://queenpaolafoundation.be" target="_blank" rel="noopener">${t().footerOrg}</a>`;
   // Reset quiz and show intro
@@ -795,7 +808,7 @@ function showResults(fname){
 
   document.getElementById("share").onclick = async () => {
     const text = l.shareText.replace('%s', score);
-    const url  = window.location.href;
+    const url  = SITE_URL + langPath(lang).slice(1);
     try {
       if(navigator.share){ await navigator.share({ title: l.shareTitle, text, url }); }
       else { await navigator.clipboard.writeText(text + " " + url); document.getElementById("share").textContent = "✓ " + (lang==='nl' ? "Link gekopieerd!" : "Lien copié !"); }
@@ -805,9 +818,8 @@ function showResults(fname){
 }
 
 /* ── Init ──────────────────────────────────────────────── */
-// Detect browser language preference
-const browserLang = (navigator.language || "").toLowerCase();
-if(browserLang.startsWith("fr")){
+// Language comes from the URL: /fr/ = FR, everything else = NL (default)
+if(document.documentElement.lang === "fr" || /^\/fr(\/|$)/.test(location.pathname)){
   switchLang("fr");
 } else {
   showIntro();

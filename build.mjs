@@ -6,7 +6,7 @@ import { readFileSync, writeFileSync, mkdirSync, copyFileSync, rmSync } from "no
 const src = readFileSync("index.html", "utf8");
 
 const FR_TITLE = "Le test de réalité · Pelicano × Fondation Reine Paola";
-const FR_OG_DESC = "Pensez-vous réellement connaître les conditions de vie de la jeunesse en Belgique ? Faites le test de réalité en 2 minutes.";
+const FR_OG_DESC = "Savez-vous vraiment ce que c’est que de grandir en Belgique ? Tous les enfants ne grandissent pas avec les mêmes chances. En 2 minutes, faites le test de réalité sur la pauvreté infantile en Belgique.";
 const FR_IMG_ALT = "Deux enfants souriants contre un arbre";
 
 const frReplacements = [
@@ -20,9 +20,9 @@ const frReplacements = [
   ['<meta property="og:locale:alternate" content="fr_BE">', '<meta property="og:locale:alternate" content="nl_BE">'],
   ['<meta property="og:title" content="De realiteitscheck · Pelicano × Stichting Koningin Paola">', `<meta property="og:title" content="${FR_TITLE}">`],
   ['<meta name="twitter:title" content="De realiteitscheck · Pelicano × Stichting Koningin Paola">', `<meta name="twitter:title" content="${FR_TITLE}">`],
-  ['<meta property="og:description" content="Denk je dat je weet hoe het is om op te groeien in België? Doe de 2-minuten realiteitscheck.">',
+  ['<meta property="og:description" content="Weet jij echt hoe het is om op te groeien in België? Niet elk kind groeit op met dezelfde kansen. Doe in 2 minuten de realiteitscheck over kinderarmoede in België.">',
    `<meta property="og:description" content="${FR_OG_DESC}">`],
-  ['<meta name="twitter:description" content="Denk je dat je weet hoe het is om op te groeien in België? Doe de 2-minuten realiteitscheck.">',
+  ['<meta name="twitter:description" content="Weet jij echt hoe het is om op te groeien in België? Niet elk kind groeit op met dezelfde kansen. Doe in 2 minuten de realiteitscheck over kinderarmoede in België.">',
    `<meta name="twitter:description" content="${FR_OG_DESC}">`],
   ['<meta property="og:image:alt" content="Twee lachende kinderen tegen een boom">', `<meta property="og:image:alt" content="${FR_IMG_ALT}">`],
   ['<meta name="twitter:image:alt" content="Twee lachende kinderen tegen een boom">', `<meta name="twitter:image:alt" content="${FR_IMG_ALT}">`],

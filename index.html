@@ -243,7 +243,9 @@ const _SKP_SVG = `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org
 `;
 
 const pelicanoLogo = () => `<img class="logo-pelicano" src="https://adfinitas.b-cdn.net/pelicano/centre-philanthropique/pelicano-logo-baseline-dark-${lang === 'fr' ? 'FR' : 'NL'}.png" alt="Pelicano">`;
-const SVG_FRP = `<img class="logo-frp" src="https://adfinitas.b-cdn.net/pelicano/centre-philanthropique/fondation-reine-paola.png" alt="Stichting Koningin Paola / Fondation Reine Paola">`;
+const frpLogo = () => lang === "fr"
+  ? `<img class="logo-frp" src="https://adfinitas.b-cdn.net/pelicano/centre-philanthropique/fondation-reine-paola.png" alt="Fondation Reine Paola">`
+  : `<img class="logo-frp" src="https://adfinitas.b-cdn.net/pelicano-quizz/fondation-reine-paola-NL-trilingue.png" alt="Stichting Koningin Paola">`;
 
 /* ── i18n ──────────────────────────────────────────────── */
 const T = {
@@ -507,7 +509,7 @@ function switchLang(l){
 }
 
 function logoHeader(){
-  return `<div class="logo-header">${pelicanoLogo()}<div class="logo-sep"></div>${SVG_FRP}</div>`;
+  return `<div class="logo-header">${pelicanoLogo()}<div class="logo-sep"></div>${frpLogo()}</div>`;
 }
 
 function render(html){
